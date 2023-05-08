@@ -1,0 +1,6 @@
+app:
+  telegram:
+    token: tokenhere
+    name: VideoReplaceBoy
+  youtubedl:
+    path: /usr/local/bin/yt-dlp
