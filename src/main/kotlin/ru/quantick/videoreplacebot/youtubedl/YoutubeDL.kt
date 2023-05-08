@@ -97,9 +97,7 @@ class YoutubeDL(
 
     fun getCommandOutput(cmd: Array<String>, ignoreErrors: Boolean): Result? {
         try {
-            val process = ProcessBuilder(
-                *cmd
-            )
+            val process = ProcessBuilder(*cmd)
                 .redirectErrorStream(true)
                 .start()
             val stdOut = process.inputStream.bufferedReader().readText()
