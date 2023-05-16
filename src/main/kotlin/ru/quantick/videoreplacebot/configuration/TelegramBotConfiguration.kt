@@ -27,21 +27,6 @@ class TelegramBotConfiguration(
             classManager = springClassManager
         }
 
-//        runBlocking {
-//            setWebhook("${host}/${token}").send(bot)
-//        }
-
-        GlobalScope.launch {
-            bot.handleUpdates()
-        }
-//        runBlocking {
-//            launch {
-//                bot.handleUpdates()
-//            }
-//        }
-
-//        bot.update.setBehaviour { handle(it) }
-
         return bot
     }
 
