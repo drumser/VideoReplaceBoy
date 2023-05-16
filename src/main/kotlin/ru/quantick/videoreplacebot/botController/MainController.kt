@@ -6,14 +6,16 @@ import eu.vendeli.tgbot.api.media.video
 import eu.vendeli.tgbot.types.User
 import eu.vendeli.tgbot.types.internal.ProcessedUpdate
 import mu.KLogging
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Component
 import ru.quantick.videoreplacebot.common.Constants.VIDEO_URL_REGEX
+import ru.quantick.videoreplacebot.event.VideoFoundEvent
 import ru.quantick.videoreplacebot.youtubedl.Config
 import ru.quantick.videoreplacebot.youtubedl.YoutubeDL
 
 @Component
 class MainController(
-    private val youtubeDL: YoutubeDL
+    private val eventPublisher: ApplicationEventPublisher,
 ) {
     @UnprocessedHandler()
     suspend fun start(update: ProcessedUpdate, user: User, bot: TelegramBot) {
@@ -21,24 +23,16 @@ class MainController(
         val videoUrl = VIDEO_URL_REGEX.find(userMessage)?.value.orEmpty()
         logger.info { "Got new message" }
         if (videoUrl.isNotEmpty()) {
-            logger.info { "Found videourl ${videoUrl}" }
-            val url = youtubeDL.execute(
-                Config.builder()
-                    .skipDownload()
-                    .url(videoUrl)
-            )?.formats?.first()?.url
-
-            if (url != null) {
-                logger.info { "Found video ${url}" }
-
-                val messageId = update.update.message?.messageId
-                if (messageId != null) {
-                    video { url }
-                        .caption { "Загружено ✅" }
-                        .options { replyToMessageId = messageId }
-                        .send(user, bot)
-                }
+            val messageId = update.update.message?.messageId
+            val chatId = update.update.message?.chat?.id
+            if (chatId != null && messageId != null) {
+                eventPublisher.publishEvent(
+                    VideoFoundEvent(
+                        this, messageId, chatId, videoUrl
+                    )
+                )
             }
+
         }
     }
 
