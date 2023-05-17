@@ -44,7 +44,7 @@ class NewVideoListener(
 
                     if (url != null) {
                         video { url }
-                            .caption { "Загружено ✅" }
+                            .caption { foundVideo.videoUrl }
                             .options { replyToMessageId = foundVideo.replyTo }
                             .send(foundVideo.chatId, bot)
                     }

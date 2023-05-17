@@ -20,7 +20,7 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("eu.vendeli:telegram-bot:2.7.3")
+	implementation("eu.vendeli:telegram-bot:2.8.0")
 	implementation("com.lordcodes.turtle:turtle:0.8.0")
 	implementation("io.github.microutils:kotlin-logging-jvm:2.1.20")
 	implementation("com.google.code.gson:gson:2.8.9")
