@@ -24,6 +24,8 @@ dependencies {
 	implementation("com.lordcodes.turtle:turtle:0.8.0")
 	implementation("io.github.microutils:kotlin-logging-jvm:2.1.20")
 	implementation("com.google.code.gson:gson:2.8.9")
+	implementation("org.springframework.retry:spring-retry:2.0.0")
+	implementation("org.springframework:spring-aspects")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")

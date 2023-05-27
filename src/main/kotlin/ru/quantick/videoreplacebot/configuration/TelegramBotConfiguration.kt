@@ -15,13 +15,12 @@ import ru.quantick.videoreplacebot.implementation.SpringClassManager
 class TelegramBotConfiguration(
     @Value("\${app.telegram.token}") val token: String,
     @Value("\${app.telegram.name}") val name: String,
-//    @Value("\${app.telegram.host}") val host: String,
     val springClassManager: SpringClassManager
 ) {
     @Bean
     fun createBot(): TelegramBot {
         val bot = TelegramBot(
-            token, "ru.quantick.videoreplacebot.botController"
+            token
         )
         {
             classManager = springClassManager

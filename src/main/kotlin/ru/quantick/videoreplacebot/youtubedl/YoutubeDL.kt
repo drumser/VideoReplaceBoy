@@ -1,6 +1,7 @@
 package ru.quantick.videoreplacebot.youtubedl
 
 import com.google.gson.Gson
+import mu.KLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
@@ -51,6 +52,10 @@ class Config private constructor() {
         return addOptionImmutable(arrayOf("--playlist-end", count.toString()))
     }
 
+    fun maxFileSize(sizeInMb: Int): Config {
+        return addOptionImmutable(arrayOf("--max-filesize", "${sizeInMb}M"))
+    }
+
     fun downloadPath(path: String): Config {
         return addOptionImmutable(arrayOf("--paths", path))
     }
@@ -77,7 +82,10 @@ data class Result(
 )
 
 data class Format(
-    val url: String
+    val url: String,
+    val format_note: String?,
+    val format: String?,
+    val filesize: Int,
 )
 
 @Service
@@ -101,13 +109,16 @@ class YoutubeDL(
                 .redirectErrorStream(true)
                 .start()
             val stdOut = process.inputStream.bufferedReader().readText()
+
             process.waitFor()
 
             if (!ignoreErrors && process.exitValue() != 0) {
                 throw Exception("Command execution failed with exit code: ${process.exitValue()}")
             }
 
-            return Gson().fromJson(stdOut, Result::class.java)
+            val json = Gson().fromJson(stdOut, Result::class.java)
+            logger.info { json.formats.toString() }
+            return json
         } catch (e: Exception) {
             if (ignoreErrors) {
                 return null
@@ -116,4 +127,5 @@ class YoutubeDL(
         }
     }
 
+    companion object : KLogging()
 }

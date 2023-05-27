@@ -3,7 +3,7 @@ package ru.quantick.videoreplacebot.event
 import org.springframework.context.ApplicationEvent
 
 class VideoFoundEvent(
-    private val source: Any,
+    source: Any,
     val replyTo: Long,
     val chatId: Long,
     val videoUrl: String
